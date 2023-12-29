@@ -1,17 +1,13 @@
 FROM ubuntu:latest AS build
 RUN apt-get update
 RUN apt-get install openjdk-17-jdk -y
-VOLUME temp
-COPY . .
 
 RUN apt-get install maven -y
 RUN mvn clean install -DskipTests
-RUN mkdir temp
 
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17.0.8.1_1-jdk-jammy
 
-EXPOSE 8080
-
-COPY --from=build /target/spring-project-0.0.1-SNAPSHOT.jar app.jar
-
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+VOLUME /tmp
+COPY . .
+RUN ./mvnw clean install -DskipTests
+ENTRYPOINT ["java","-jar","target/desafio-backend-pagnet-0.0.1-SNAPSHOT.jar"]
