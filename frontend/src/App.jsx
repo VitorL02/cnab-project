@@ -11,13 +11,12 @@ function App() {
   const [transactions, setTransactions] = useState([]);
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const reportUrl = import.meta.env.VITE_REACT_APP_FETCH_URL;
-  const uploadUrl = import.meta.env.VITE_REACT_APP_UPLOAD_URL;
+  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
 
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get(reportUrl);
+      const response = await axios.get(`${apiUrl}/report`);
       setTransactions(response.data)
     } catch (error) {
       showToastMessage(error.response);
@@ -34,7 +33,7 @@ function App() {
   const uploadFile = async () => {
     const formData = new FormData();
     formData.append('file', file);
-    axios.post(uploadUrl, formData,
+    axios.post(`${apiUrl}/cnab/upload`, formData,
       {
         headers: {
           "Content-Type": 'multipart/form-data'
