@@ -36,7 +36,7 @@ public class BatchConfig {
     private PlatformTransactionManager platformTransactionManager;
     @Autowired
     private  JobRepository jobRepository;
-    
+
     @Bean
     Job job(Step step,JobRepository jobRepository){
         return new JobBuilder("job",jobRepository).start(step).incrementer(new RunIdIncrementer()).build();
